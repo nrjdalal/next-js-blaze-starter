@@ -118,7 +118,7 @@ const StripeEmbed = ({ item }: { item: { id: string } }) => {
             . No charges will be made
           </p>
           <p className="mt-2 text-sm font-bold uppercase text-red-500">
-            Example Test Card
+            Visa Test Card
           </p>
           <pre className="w mt-2 min-w-80 rounded-md border px-5 py-2 text-center font-bold text-black/75">
             4242 4242 4242 4242

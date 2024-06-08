@@ -13,7 +13,7 @@ export async function GET() {
   const plan = (
     await db
       .select({
-        credits: users.credits,
+        balance: users.balance,
         stripePlan: users.stripePlan,
         stripePriceId: users.stripePriceId,
         stripeSubscriptionId: users.stripeSubscriptionId,

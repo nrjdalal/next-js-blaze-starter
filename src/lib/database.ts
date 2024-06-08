@@ -31,7 +31,7 @@ export const users = pgTable('user', {
   stripeSubscriptionId: text('stripeSubscriptionId').unique(),
   stripeCurrentPeriodEnd: timestamp('stripeCurrentPeriodEnd', { mode: 'date' }),
 
-  credits: integer('credits'),
+  balance: integer('balance').default(0),
 })
 
 export const accounts = pgTable(
@@ -81,13 +81,20 @@ export const verificationTokens = pgTable(
 )
 
 export const transactions = pgTable('transaction', {
-  id: text('id')
-    .primaryKey()
-    .$defaultFn(() => crypto.randomUUID()),
   userId: text('userId')
     .notNull()
     .references(() => users.publicId),
-  amount: integer('amount').default(0),
+
+  id: text('id').primaryKey(),
+  object: text('object').notNull(),
+  amount: integer('amount').notNull(),
+  currency: text('currency').notNull(),
+  invoice_url: text('invoice_url'),
+  receipt_url: text('receipt_url'),
+
+  type: text('type').notNull(),
+  balance: integer('balance'),
+
   createdAt: timestamp('createdAt', { mode: 'date' }).notNull(),
   updatedAt: timestamp('updatedAt', { mode: 'date' }).notNull(),
 })

@@ -1,4 +1,4 @@
-import { db, users } from '@/lib/database'
+import { db, transactions, users } from '@/lib/database'
 import { stripe } from '@/lib/stripe'
 import { eq } from 'drizzle-orm'
 import Stripe from 'stripe'
@@ -14,28 +14,47 @@ export async function POST(request: Request) {
         const charge = await stripe.charges.retrieve(session.id)
 
         if (charge.status === 'succeeded') {
-          let getCredits =
-            (
-              await db
-                .select({
-                  credits: users.credits,
-                })
-                .from(users)
-                .where(eq(users.stripeCustomerId, charge.customer as string))
-            )[0].credits || 0
+          let userData = (
+            await db
+              .select({
+                publicId: users.publicId,
+                balance: users.balance,
+              })
+              .from(users)
+              .where(eq(users.stripeCustomerId, charge.customer as string))
+          )[0]
+
+          const amtValue = (amount: number) => {
+            if (amount / 100 === 5) {
+              return (1000 * 110) / 100
+            } else if (amount / 100 === 10) {
+              return (2000 * 120) / 100
+            } else if (amount / 100 === 15) {
+              return (3000 * 130) / 100
+            } else {
+              return 0
+            }
+          }
+
+          await db.insert(transactions).values({
+            userId: userData.publicId,
+            id: charge.id,
+            object: charge.object,
+            amount: charge.amount / 100,
+            currency: charge.currency,
+            receipt_url: charge.receipt_url,
+
+            type: 'debit',
+            balance: (userData.balance as number) + amtValue(charge.amount),
+
+            createdAt: new Date(charge.created * 1000),
+            updatedAt: new Date(),
+          })
 
           await db
             .update(users)
             .set({
-              credits:
-                getCredits +
-                (charge.amount / 100 === 5
-                  ? (1000 * 110) / 100
-                  : charge.amount / 100 === 10
-                    ? (2000 * 120) / 100
-                    : charge.amount / 100 === 15
-                      ? (3000 * 130) / 100
-                      : 0),
+              balance: (userData.balance as number) + amtValue(charge.amount),
             })
             .where(eq(users.stripeCustomerId, charge.customer as string))
         }

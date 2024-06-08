@@ -105,7 +105,7 @@ const SidebarItems = ({
           {userIsLoading ? (
             <StitchesLogoIcon className="size-5 animate-spin" />
           ) : (
-            userData?.credits || 0
+            userData?.balance || 0
           )}{' '}
           Credits
         </span>

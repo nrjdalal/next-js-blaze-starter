@@ -7,6 +7,7 @@ import { cn } from '@/lib/utils'
 import { HamburgerMenuIcon, PlusIcon } from '@radix-ui/react-icons'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import { useState } from 'react'
 
 const data = [
   {
@@ -23,32 +24,53 @@ const data = [
   devOnly?: boolean
 }[]
 
+export const MobileSidebar = () => {
+  const pathname = usePathname()
+
+  const [open, setOpen] = useState(false)
+
+  return (
+    <Sheet open={open} onOpenChange={() => setOpen(!open)}>
+      <SheetTrigger asChild>
+        <HamburgerMenuIcon className="size-7 cursor-pointer lg:hidden" />
+      </SheetTrigger>
+      <SheetContent className="max-w-72 p-0 lg:hidden">
+        <div className="border-b">
+          <Logo
+            onClick={() => {
+              setOpen(!open)
+            }}
+          />
+        </div>
+
+        <SidebarItems
+          pathname={pathname}
+          onClick={() => {
+            setOpen(!open)
+          }}
+        />
+      </SheetContent>
+    </Sheet>
+  )
+}
+
 export default function Sidebar() {
   const pathname = usePathname()
 
   return (
-    <>
-      <Sheet>
-        <SheetTrigger asChild>
-          <HamburgerMenuIcon className="fixed right-5 top-3.5 size-7 cursor-pointer lg:hidden" />
-        </SheetTrigger>
-        <SheetContent className="max-w-72 p-0 lg:hidden">
-          <div className="border-b">
-            <Logo />
-          </div>
-
-          <SidebarItems pathname={pathname} />
-        </SheetContent>
-      </Sheet>
-
-      <div className="hidden border-r bg-background lg:block">
-        <SidebarItems pathname={pathname} />
-      </div>
-    </>
+    <div className="hidden border-r bg-background lg:block">
+      <SidebarItems pathname={pathname} />
+    </div>
   )
 }
 
-const SidebarItems = ({ pathname }: { pathname: string }) => {
+const SidebarItems = ({
+  pathname,
+  ...props
+}: {
+  pathname: string
+  props?: any
+}) => {
   return (
     <div className="p-5">
       <div className="grid gap-y-2">
@@ -59,6 +81,7 @@ const SidebarItems = ({ pathname }: { pathname: string }) => {
             href={item.href}
             active={pathname.startsWith(item.href)}
             devOnly={item.devOnly}
+            {...props}
           />
         ))}
       </div>
@@ -68,6 +91,7 @@ const SidebarItems = ({ pathname }: { pathname: string }) => {
       <Link
         className="flex items-center justify-between rounded-md border px-3 py-2 font-medium text-primary/75"
         href={'/billing'}
+        {...props}
       >
         1000 Zen <PlusIcon className="size-5" />
       </Link>
@@ -84,11 +108,13 @@ const SidebarItem = ({
   href,
   active,
   devOnly,
+  ...props
 }: {
   title: string
   href: string
   active: boolean
   devOnly?: boolean
+  props?: any
 }) => {
   return (
     <Link
@@ -98,6 +124,7 @@ const SidebarItem = ({
         devOnly && process.env.NODE_ENV === 'development' ? 'block' : 'block',
       )}
       href={href}
+      {...props}
     >
       {title}
     </Link>

@@ -19,21 +19,6 @@ export default async function Layout({
       <div className="relative min-h-dvh bg-secondary/30">
         <Navbar />
 
-        <Link
-          href={'/account'}
-          className="fixed right-16 top-2 size-10 lg:right-5"
-        >
-          <img
-            className="size-10 rounded-full border"
-            src={
-              session.user.image
-                ? session.user.image
-                : 'https://api.dicebear.com/8.x/thumbs/svg?seed=Aneka'
-            }
-            alt=""
-          />
-        </Link>
-
         <div className="relative grid min-h-[calc(100dvh-3.5rem)] lg:grid-cols-[18rem_auto]">
           <Sidebar />
 

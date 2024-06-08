@@ -1,18 +1,48 @@
+/* eslint-disable @next/next/no-img-element */
+
+'use client'
+
+import { MobileSidebar } from '@/components/sidebar'
+import { useQuery } from '@tanstack/react-query'
 import Link from 'next/link'
 
 export default function Navbar() {
+  const { data: sessionData } = useQuery({
+    queryKey: ['session'],
+    queryFn: async () => {
+      const response = await fetch('/api/db/users')
+      return response.json()
+    },
+  })
+
   return (
-    <nav className="sticky top-0 flex h-14 items-center justify-between border-b bg-background">
+    <nav className="sticky top-0 z-40 flex h-14 items-center justify-between border-b bg-background">
       <Logo />
+
+      <div className="mr-5 flex items-center gap-4">
+        <Link href={'/account'}>
+          <img
+            className="size-10 rounded-full border"
+            src={
+              sessionData?.image
+                ? sessionData.image
+                : 'https://api.dicebear.com/8.x/thumbs/svg?seed=Aneka'
+            }
+            alt="Profile Picture"
+          />
+        </Link>
+        <MobileSidebar />
+      </div>
     </nav>
   )
 }
 
-export const Logo = () => {
+export const Logo = ({ ...props }: any) => {
   return (
     <Link
       href={'/dashboard'}
       className="flex h-14 w-72 items-center gap-x-2 px-5 lg:border-r"
+      {...props}
     >
       <svg
         fill="currentColor"

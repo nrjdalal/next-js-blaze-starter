@@ -38,7 +38,7 @@ export default function Page() {
           {products
             .filter((product) => product.recurring)
             .map((plan, index) =>
-              sessionData.stripePlan === plan.id ? (
+              sessionData?.stripePlan === plan.id ? (
                 <div key={index} className="relative select-none">
                   <span className="absolute left-2 top-2 rounded-md bg-green-600 px-2 py-0.5 text-sm font-medium text-white">
                     Current

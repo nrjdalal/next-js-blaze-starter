@@ -5,7 +5,7 @@ import {
   DialogContent,
   DialogTrigger,
 } from '@/components/ui/stripe-dialog'
-import { QueryUser } from '@/lib/react-query'
+import { SyncUser } from '@/lib/react-query'
 import { products } from '@/lib/stripe'
 import {
   EmbeddedCheckout,
@@ -15,7 +15,7 @@ import { loadStripe } from '@stripe/stripe-js'
 import Link from 'next/link'
 
 export default function Page() {
-  const { data: userData } = QueryUser()
+  const { data: userData } = SyncUser()
 
   return (
     <div className="container max-w-screen-2xl space-y-12">

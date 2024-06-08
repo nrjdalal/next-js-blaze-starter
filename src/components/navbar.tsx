@@ -3,11 +3,11 @@
 'use client'
 
 import { MobileSidebar } from '@/components/sidebar'
-import { QueryUser } from '@/lib/react-query'
+import { SyncUser } from '@/lib/react-query'
 import Link from 'next/link'
 
 export default function Navbar() {
-  const { data: userData } = QueryUser()
+  const { data: userData } = SyncUser()
   return (
     <nav className="sticky top-0 z-40 flex h-14 items-center justify-between border-b bg-background">
       <Logo />

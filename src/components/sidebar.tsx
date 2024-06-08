@@ -3,7 +3,7 @@
 import Darkmode from '@/components/darkmode'
 import { Logo } from '@/components/navbar'
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
-import { QueryUser } from '@/lib/react-query'
+import { SyncUser } from '@/lib/react-query'
 import { cn } from '@/lib/utils'
 import {
   HamburgerMenuIcon,
@@ -77,7 +77,7 @@ const SidebarItems = ({
   pathname: string
   props?: any
 }) => {
-  const { data: userData, isLoading: userIsLoading } = QueryUser()
+  const { data: userData, isLoading: userIsLoading } = SyncUser()
 
   return (
     <div className="p-5">

@@ -5,7 +5,11 @@ import { Logo } from '@/components/navbar'
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
 import { QueryUser } from '@/lib/react-query'
 import { cn } from '@/lib/utils'
-import { HamburgerMenuIcon, PlusIcon } from '@radix-ui/react-icons'
+import {
+  HamburgerMenuIcon,
+  PlusIcon,
+  StitchesLogoIcon,
+} from '@radix-ui/react-icons'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useState } from 'react'
@@ -99,27 +103,7 @@ const SidebarItems = ({
       >
         <span className="flex items-center gap-2">
           {userIsLoading ? (
-            <svg
-              className="size-5 animate-spin"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-            >
-              <circle
-                className="opacity-25"
-                cx="12"
-                cy="12"
-                r="10"
-                stroke="currentColor"
-                strokeWidth="4"
-              ></circle>
-              <path
-                className="opacity-75"
-                d="M4 12a8 8 0 018-8V2.5"
-                stroke="currentColor"
-                strokeWidth="4"
-              ></path>
-            </svg>
+            <StitchesLogoIcon className="size-5 animate-spin" />
           ) : (
             userData?.credits || 0
           )}{' '}

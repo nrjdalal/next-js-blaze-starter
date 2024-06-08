@@ -22,13 +22,13 @@ export async function POST(request: Request) {
       .where(eq(users.publicId, session.user.publicId))
   )[0].stripeCustomerId
 
-  if (!customerId) {
-    let stripeCustomer = (
-      await stripe.customers.list({
-        email: session.user.email,
-      })
-    ).data[0]
+  let stripeCustomer = (
+    await stripe.customers.list({
+      email: session.user.email,
+    })
+  ).data[0]
 
+  if (!customerId || customerId !== stripeCustomer?.id) {
     if (!stripeCustomer) {
       stripeCustomer = await stripe.customers.create({
         email: session.user.email,

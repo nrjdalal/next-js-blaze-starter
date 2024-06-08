@@ -2,19 +2,13 @@
 
 'use client'
 
+import { QueryUser } from '@/app/(admin)/react-query'
 import { MobileSidebar } from '@/components/sidebar'
 import { useQuery } from '@tanstack/react-query'
 import Link from 'next/link'
 
 export default function Navbar() {
-  const { data: sessionData } = useQuery({
-    queryKey: ['session'],
-    queryFn: async () => {
-      const response = await fetch('/api/db/users')
-      return response.json()
-    },
-  })
-
+  const { data: userData } = QueryUser()
   return (
     <nav className="sticky top-0 z-40 flex h-14 items-center justify-between border-b bg-background">
       <Logo />
@@ -24,8 +18,8 @@ export default function Navbar() {
           <img
             className="size-10 rounded-full border"
             src={
-              sessionData?.image
-                ? sessionData.image
+              userData?.image
+                ? userData.image
                 : 'https://api.dicebear.com/8.x/thumbs/svg?seed=Aneka'
             }
             alt="Profile Picture"

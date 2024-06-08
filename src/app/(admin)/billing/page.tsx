@@ -1,5 +1,6 @@
 'use client'
 
+import { QueryUser } from '@/app/(admin)/react-query'
 import {
   Dialog,
   DialogContent,
@@ -11,17 +12,10 @@ import {
   EmbeddedCheckoutProvider,
 } from '@stripe/react-stripe-js'
 import { loadStripe } from '@stripe/stripe-js'
-import { useQuery } from '@tanstack/react-query'
 import Link from 'next/link'
 
 export default function Page() {
-  const { data: sessionData } = useQuery({
-    queryKey: ['session'],
-    queryFn: async () => {
-      const response = await fetch('/api/db/users')
-      return response.json()
-    },
-  })
+  const { data: userData } = QueryUser()
 
   return (
     <div className="container max-w-screen-2xl space-y-12">
@@ -38,7 +32,7 @@ export default function Page() {
           {products
             .filter((product) => product.recurring)
             .map((plan, index) =>
-              sessionData?.stripePlan === plan.id ? (
+              userData?.stripePlan === plan.id ? (
                 <div key={index} className="relative select-none">
                   <span className="absolute left-2 top-2 rounded-md bg-green-600 px-2 py-0.5 text-sm font-medium text-white">
                     Current

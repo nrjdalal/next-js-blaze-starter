@@ -45,6 +45,7 @@ export const MobileSidebar = () => {
 
         <SidebarItems
           pathname={pathname}
+          // @ts-ignore
           onClick={() => {
             setOpen(!open)
           }}

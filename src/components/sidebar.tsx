@@ -50,7 +50,6 @@ export const MobileSidebar = () => {
 
         <SidebarItems
           pathname={pathname}
-          // @ts-ignore
           onClick={() => {
             setOpen(!open)
           }}
@@ -70,13 +69,12 @@ export default function Sidebar() {
   )
 }
 
-const SidebarItems = ({
-  pathname,
-  ...props
-}: {
+interface SidebarItemsProps {
   pathname: string
-  props?: any
-}) => {
+  onClick?: () => void
+}
+
+const SidebarItems = ({ pathname, ...props }: SidebarItemsProps) => {
   const { data: userData, isLoading: userIsLoading } = SyncUser()
 
   return (

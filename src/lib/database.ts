@@ -9,7 +9,6 @@ import {
 import { drizzle } from 'drizzle-orm/postgres-js'
 import type { AdapterAccountType } from 'next-auth/adapters'
 import postgres from 'postgres'
-import { stripe } from './stripe'
 
 const connectionString = process.env.POSTGRES_URL as string
 const pool = postgres(connectionString, { max: 1 })
@@ -26,10 +25,11 @@ export const users = pgTable('user', {
   emailVerified: timestamp('emailVerified', { mode: 'date' }),
   image: text('image'),
 
+  stripePlan: text('stripePlan'),
   stripePriceId: text('stripePriceId'),
   stripeCustomerId: text('stripeCustomerId').unique(),
   stripeSubscriptionId: text('stripeSubscriptionId').unique(),
-  stripeSucbcritpionEnd: timestamp('stripeSubscriptionEnd', { mode: 'date' }),
+  stripeCurrentPeriodEnd: timestamp('stripeCurrentPeriodEnd', { mode: 'date' }),
 })
 
 export const accounts = pgTable(

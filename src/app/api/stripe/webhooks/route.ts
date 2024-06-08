@@ -1,4 +1,6 @@
-import { headers } from 'next/headers'
+import { db, users } from '@/lib/database'
+import { stripe } from '@/lib/stripe'
+import { eq } from 'drizzle-orm'
 import Stripe from 'stripe'
 
 export async function POST(request: Request) {
@@ -8,8 +10,29 @@ export async function POST(request: Request) {
 
   // TODO: Validate the event
 
+  const session = event.data.object as Stripe.Checkout.Session
+
   try {
     switch (event.type) {
+      case 'invoice.payment_succeeded': {
+        const subscription = await stripe.subscriptions.retrieve(
+          session.subscription as string,
+        )
+
+        await db
+          .update(users)
+          .set({
+            stripePlan: subscription.items.data[0].price.product as string,
+            stripePriceId: subscription.items.data[0].price.id,
+            stripeSubscriptionId: subscription.id,
+            stripeCurrentPeriodEnd: new Date(
+              subscription.current_period_end * 1000,
+            ),
+          })
+          .where(eq(users.stripeCustomerId, subscription.customer as string))
+
+        break
+      }
       default: {
         console.log(`Unhandled event type: ${event.type}`)
       }

@@ -1,18 +1,22 @@
-/* eslint-disable @next/next/no-img-element */
-import { auth, signOut } from '@/lib/auth'
-import { Pencil1Icon } from '@radix-ui/react-icons'
-import { redirect } from 'next/navigation'
+'use client'
 
-export default async function Page() {
-  const session = await auth()
-  if (!session) return redirect('/access')
+import { useQuery } from '@tanstack/react-query'
+
+export default function Page() {
+  const { data: sessionData } = useQuery({
+    queryKey: ['session'],
+    queryFn: async () => {
+      const response = await fetch('/api/db/users')
+      return response.json()
+    },
+  })
 
   return (
     <div className="container max-w-screen-sm space-y-12">
       <div className="space-y-1 border-b pb-4">
         <h1 className="text-2xl font-medium">Dashboard</h1>
         <p className="text-primary/50">
-          Welcome back, {session.user.name.split(' ')[0]}
+          Welcome back! Here&apos;s a quick overview of your account!
         </p>
       </div>
     </div>

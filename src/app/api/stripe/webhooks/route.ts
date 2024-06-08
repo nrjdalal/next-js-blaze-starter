@@ -6,10 +6,6 @@ import Stripe from 'stripe'
 export async function POST(request: Request) {
   const event = await request.json()
 
-  console.log(`Received event: ${event.id} - ${event.type}`)
-
-  // TODO: Validate the event
-
   const session = event.data.object as Stripe.Checkout.Session
 
   try {

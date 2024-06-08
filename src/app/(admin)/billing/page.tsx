@@ -81,6 +81,9 @@ export default function Page() {
                     className="space-y-1 rounded-md border bg-background p-5"
                   >
                     <h3 className="text-xl font-medium">{item.name}</h3>
+                    <p className="text-sm text-primary/75">
+                      {item?.description}
+                    </p>
                     <p className="text-lg text-primary/75">
                       {item.amount} {item.currency.toUpperCase()}
                     </p>

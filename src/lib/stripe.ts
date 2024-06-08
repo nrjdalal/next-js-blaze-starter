@@ -41,20 +41,20 @@ export const products: Product[] = [
     name: 'Starter Pack',
     amount: 5,
     currency: 'usd',
-    description: '1000 credits + 10% bonus',
+    description: '1000 credits + 100 bonus',
   },
   {
     id: 'pro_pack',
     name: 'Pro Pack',
     amount: 10,
     currency: 'usd',
-    description: '2000 credits + 20% bonus',
+    description: '2000 credits + 400 bonus',
   },
   {
     id: 'premium_pack',
     name: 'Premium Pack',
     amount: 15,
     currency: 'usd',
-    description: '3000 credits + 30% bonus',
+    description: '3000 credits + 900 bonus',
   },
 ]

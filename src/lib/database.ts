@@ -30,6 +30,8 @@ export const users = pgTable('user', {
   stripeCustomerId: text('stripeCustomerId').unique(),
   stripeSubscriptionId: text('stripeSubscriptionId').unique(),
   stripeCurrentPeriodEnd: timestamp('stripeCurrentPeriodEnd', { mode: 'date' }),
+
+  credits: integer('credits'),
 })
 
 export const accounts = pgTable(

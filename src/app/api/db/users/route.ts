@@ -3,7 +3,7 @@ import { db, users } from '@/lib/database'
 import { eq } from 'drizzle-orm'
 import { NextResponse } from 'next/server'
 
-export async function GET(request: Request) {
+export async function GET() {
   const session = await auth()
 
   if (!session) {
@@ -13,6 +13,7 @@ export async function GET(request: Request) {
   const plan = (
     await db
       .select({
+        credits: users.credits,
         stripePlan: users.stripePlan,
         stripePriceId: users.stripePriceId,
         stripeSubscriptionId: users.stripeSubscriptionId,

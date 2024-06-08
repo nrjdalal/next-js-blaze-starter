@@ -1,11 +1,11 @@
 'use client'
 
-import { QueryUser } from '@/app/(admin)/react-query'
 import {
   Dialog,
   DialogContent,
   DialogTrigger,
 } from '@/components/ui/stripe-dialog'
+import { QueryUser } from '@/lib/react-query'
 import { products } from '@/lib/stripe'
 import {
   EmbeddedCheckout,

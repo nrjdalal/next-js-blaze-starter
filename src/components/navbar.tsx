@@ -2,9 +2,8 @@
 
 'use client'
 
-import { QueryUser } from '@/app/(admin)/react-query'
 import { MobileSidebar } from '@/components/sidebar'
-import { useQuery } from '@tanstack/react-query'
+import { QueryUser } from '@/lib/react-query'
 import Link from 'next/link'
 
 export default function Navbar() {

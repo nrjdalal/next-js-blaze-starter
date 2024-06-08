@@ -14,6 +14,38 @@ export async function POST(request: Request) {
 
   try {
     switch (event.type) {
+      case 'charge.updated': {
+        const charge = await stripe.charges.retrieve(session.id)
+
+        if (charge.status === 'succeeded') {
+          let getCredits =
+            (
+              await db
+                .select({
+                  credits: users.credits,
+                })
+                .from(users)
+                .where(eq(users.stripeCustomerId, charge.customer as string))
+            )[0].credits || 0
+
+          await db
+            .update(users)
+            .set({
+              credits:
+                getCredits +
+                (charge.amount / 100 === 5
+                  ? (1000 * 110) / 100
+                  : charge.amount / 100 === 10
+                    ? (2000 * 120) / 100
+                    : charge.amount / 100 === 15
+                      ? (3000 * 130) / 100
+                      : 0),
+            })
+            .where(eq(users.stripeCustomerId, charge.customer as string))
+        }
+
+        break
+      }
       case 'invoice.payment_succeeded': {
         const subscription = await stripe.subscriptions.retrieve(
           session.subscription as string,

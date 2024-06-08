@@ -3,6 +3,7 @@
 import Darkmode from '@/components/darkmode'
 import { Logo } from '@/components/navbar'
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
+import { QueryUser } from '@/lib/react-query'
 import { cn } from '@/lib/utils'
 import { HamburgerMenuIcon, PlusIcon } from '@radix-ui/react-icons'
 import Link from 'next/link'
@@ -72,6 +73,8 @@ const SidebarItems = ({
   pathname: string
   props?: any
 }) => {
+  const { data: userData } = QueryUser()
+
   return (
     <div className="p-5">
       <div className="grid gap-y-2">
@@ -94,7 +97,8 @@ const SidebarItems = ({
         href={'/billing'}
         {...props}
       >
-        1000 Zen <PlusIcon className="size-5" />
+        {userData?.credits || 0} Credits
+        <PlusIcon className="size-5" />
       </Link>
 
       <div className="my-12" />

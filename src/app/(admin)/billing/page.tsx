@@ -7,15 +7,19 @@ import {
 } from '@/components/ui/stripe-dialog'
 import { SyncUser } from '@/lib/react-query'
 import { products } from '@/lib/stripe'
+import { ReloadIcon, StitchesLogoIcon } from '@radix-ui/react-icons'
 import {
   EmbeddedCheckout,
   EmbeddedCheckoutProvider,
 } from '@stripe/react-stripe-js'
 import { loadStripe } from '@stripe/stripe-js'
+import { useQueryClient } from '@tanstack/react-query'
 import Link from 'next/link'
 
 export default function Page() {
   const { data: userData } = SyncUser()
+
+  const queryClient = useQueryClient()
 
   return (
     <div className="container max-w-screen-2xl space-y-12">
@@ -24,6 +28,35 @@ export default function Page() {
         <p className="text-primary/50">
           Easily add credits and manage subscriptions
         </p>
+      </div>
+
+      {/* user credits below */}
+      <div className="space-y-5">
+        <h2 className="font-medium text-primary/50">Credits</h2>
+        <p className="text-sm">
+          If you&apos;ve recently made an successful transaction, you can reload
+          to recheck.
+        </p>
+        <div className="grid gap-5 md:grid-cols-2 2xl:grid-cols-3">
+          <div className="relative select-none">
+            <ReloadIcon
+              className="absolute bottom-3 right-3 size-6 rotate-90 cursor-pointer rounded-md text-sm font-medium text-green-600"
+              onClick={async () => {
+                await queryClient.invalidateQueries({
+                  queryKey: ['user'],
+                })
+              }}
+            />
+            <div className="flex flex-col items-center space-y-1 rounded-md border border-green-500 bg-background p-5">
+              <h3 className="text-xl font-medium">Available Credits</h3>
+              <p className="text-lg text-primary/75">
+                {userData?.balance || (
+                  <StitchesLogoIcon className="size-7 animate-spin" />
+                )}
+              </p>
+            </div>
+          </div>
+        </div>
       </div>
 
       <div className="space-y-5">

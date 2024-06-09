@@ -58,7 +58,7 @@ export async function POST(request: Request) {
       },
     ],
     mode: type === 'recurring' ? 'subscription' : 'payment',
-    return_url: `${request.headers.get('origin')}/billing?session_id={CHECKOUT_SESSION_ID}`,
+    return_url: `${request.headers.get('origin')}/billing?session={CHECKOUT_SESSION_ID}`,
     ui_mode: 'embedded',
   })
 

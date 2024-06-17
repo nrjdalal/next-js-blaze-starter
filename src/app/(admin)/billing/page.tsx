@@ -17,7 +17,7 @@ import { useQueryClient } from '@tanstack/react-query'
 import Link from 'next/link'
 
 export default function Page() {
-  const { data: userData } = SyncUser()
+  const { data: userData, isLoading: userIsLoading } = SyncUser()
 
   const queryClient = useQueryClient()
 
@@ -50,8 +50,10 @@ export default function Page() {
             <div className="flex flex-col items-center space-y-1 rounded-md border border-green-500 bg-background p-5">
               <h3 className="text-xl font-medium">Available Credits</h3>
               <p className="text-lg text-primary/75">
-                {userData?.balance || (
+                {userIsLoading ? (
                   <StitchesLogoIcon className="size-7 animate-spin" />
+                ) : (
+                  userData?.balance || 0
                 )}
               </p>
             </div>
